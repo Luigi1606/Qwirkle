@@ -135,15 +135,16 @@ int main(){
   tabu(tam, tabuleiro);
   int flag;
   if(escolha ==1){
-    flag = jogar(ordem, jogador, tam, tabuleiro);
-    if(flag){
-      char *k;
-      k = tabuleiro;
-      tabuleiro = aumentatab(&tam, tabuleiro);
-      free(k);
+      while(escolha != 2){
+      flag = jogar(ordem, jogador, tam, tabuleiro,pecas);
+      if(flag){
+        tabuleiro = aumentatab(&tam, tabuleiro);
+      }
+      tabu(tam, tabuleiro);
+      printf("Para jogar novamente digite 1.\nPara terminar a jogada digite 2.\n______________________________________________\n");
+      scanf("%d", &escolha);
+      getchar();
     }
-
-    tabu(tam, tabuleiro);
   }
   for(int i = 0; i <njog; i++){
     free(nomes[i]);

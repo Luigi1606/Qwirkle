@@ -9,7 +9,7 @@ void tabu(int tam, char *tabuleiro){
   printf("|\n");
   for(int i = 0; i<tam; i++){
     for(int j = 0; j < tam+2; j++){
-      printf("__ ");
+      printf("__  ");
     }
     printf("\n\n");
     printf("%d |", i);
@@ -23,7 +23,7 @@ void tabu(int tam, char *tabuleiro){
 
   }
   for(int j = 0; j < tam+2; j++){
-    printf("__ ");
+    printf("__  ");
   }
   printf("\n\n  ");
   for(int i = 0; i<tam; i++){

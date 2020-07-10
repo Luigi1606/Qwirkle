@@ -1,6 +1,6 @@
 #include "libqwirkle.h"
 
-int jogar(int ordem, char *jogador, int tam, char *tabuleiro){
+int jogar(int ordem, char *jogador, int tam, char *tabuleiro, char*pecas){
   int peca = -1;
   int flag = 1;
   do{
@@ -33,47 +33,49 @@ int jogar(int ordem, char *jogador, int tam, char *tabuleiro){
         printf("jogada invalida\n");
       }
     }while(y<0||y>=tam);
+
     posicao = 2*x + (2*y*tam);
+
     if(tabuleiro[posicao]!= ' '){
-      printf("casa ja ocupada");
+      printf("casa ja ocupada\n");
     } 
 
 
     if(x!= tam-1 && tabuleiro[posicao+2]!=jogador[peca]&&tabuleiro[posicao +3]!=jogador[peca+1] && tabuleiro[posicao+2]!= ' '){
-      printf("jogada invalida");
+      printf("jogada invalida\n");
       posicao = -1;
 
     }else if(x!= 0 &&  tabuleiro[posicao-2]!=jogador[peca]&&tabuleiro[posicao -1]!=jogador[peca+1] && tabuleiro[posicao-2]!= ' '){
-      printf("jogada invalida");
+      printf("jogada invalida\n");
       posicao = -1;
 
     }else if(y != tam-1 && tabuleiro[posicao+(2*tam)]!=jogador[peca]&&tabuleiro[posicao+1+(2*tam)]!=jogador[peca+1] && tabuleiro[posicao+(2*tam)]!= ' '){
-      printf("jogada invalida");
+      printf("jogada invalida\n");
       posicao = -1;
 
     }else if(y != 0 && tabuleiro[posicao-(2*tam)]!=jogador[peca]&&tabuleiro[posicao+1-(2*tam)]!=jogador[peca+1] && tabuleiro[posicao-(2*tam)]!= ' '){
-      printf("jogada invalida");
+      printf("jogada invalida\n");
       posicao = -1;
 
     }else{
       for(int i = 1; i<tam; i++){
         if(posicao+2*i < (y+1)*2*tam && tabuleiro[posicao+2*i]==jogador[peca] && tabuleiro[posicao+(2*i)+1]==jogador[peca +1]){
-          printf("jogada invalida");
+          printf("jogada invalida\n");
           posicao = -1;
           break;
         }
         if(posicao-2*i > (2*y*tam)-1 && tabuleiro[posicao-2*i]==jogador[peca] && tabuleiro[posicao+1-(2*i)]==jogador[peca +1]){
-          printf("jogada invalida");
+          printf("jogada invalida\n");
           posicao = -1;
           break;
         }
         if( posicao+(2*i*tam) <= 2*(tam + x-1)*tam && tabuleiro[posicao+(2*i*tam)]==jogador[peca] && tabuleiro[posicao+1+(2*i*tam)]==jogador[peca +1]){
-          printf("jogada invalida");
+          printf("jogada invalida\n");
           posicao = -1;
           break;
         }
         if(posicao-(2*i*tam)> 0 && tabuleiro[posicao-(2*i*tam)]==jogador[peca] && tabuleiro[posicao+1-(2*i*tam)]==jogador[peca +1]){
-          printf("jogada invalida");
+          printf("jogada invalida\n");
           posicao = -1;
           break;
         }
@@ -84,9 +86,18 @@ int jogar(int ordem, char *jogador, int tam, char *tabuleiro){
     }else if(y==tam-1||y== 0){
       flag = 1;
     }
-  }while(tabuleiro[posicao]!= ' ' && posicao > 0);
+  }while(tabuleiro[posicao]!= ' ' || posicao < 0);
   tabuleiro[posicao] = jogador[peca];
   tabuleiro[posicao+1] = jogador[peca+1];
+   int dealer = 0;
+   while((pecas[dealer]==0)||((dealer+2)%2!=0)){
+     dealer = rand() % 216;
+    }
+    jogador[peca] = pecas[dealer];
+    jogador[peca]= pecas[dealer+1];
+    pecas[dealer]= 0;
+    pecas[dealer+1] = 0;
+    
   if(flag){
    return 1;
   }
