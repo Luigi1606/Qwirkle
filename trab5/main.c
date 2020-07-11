@@ -16,6 +16,9 @@ int main(){
     printf("Nao ha memoria suficiente");
     exit(0);
   }
+  for(int i = 0; i<njog; i++){
+    pontos[i]=0;
+  }
   char *pecas = malloc(216*sizeof(char));
   if(pecas == NULL){
     printf("Nao ha memoria suficiente");
@@ -113,18 +116,7 @@ int main(){
   int ordem;
   ordem = primeiro;
 
-  printf("__________________________________________________\n\nVez do jogador %s\nSuas pecas sao:\n", nomes[ordem]);
-  for(int i = 0; i<12;i++){
-    printf("%c", jogador[(ordem*12)+i]);
-    if((i+3)%2==0){
-      printf(" ");
-    }
-  }
-  printf("\n\nPara JOGAR digite: 1\nPara TROCAR PECAS digite: 2\n\n______________________________________________ ");
-  int escolha;
-  scanf("%d", &escolha);
-  getchar();
-  int tam = 1;
+   int tam = 1;
   char *tabuleiro = (char*)malloc(2*sizeof(char));
   if(tabuleiro == NULL){
     printf("Nao ha memoria suficiente");
@@ -133,17 +125,53 @@ int main(){
   tabuleiro[0] = ' ';
   tabuleiro[1] = ' ';
   tabu(tam, tabuleiro);
-  int flag;
-  if(escolha ==1){
-      while(escolha != 2){
-      flag = jogar(ordem, jogador, tam, tabuleiro,pecas);
-      if(flag){
-        tabuleiro = aumentatab(&tam, tabuleiro);
+  int end = 1;
+  while(end){
+    printf("__________________________________________________\n\nVez do jogador %s\nScore: %d\n\nSuas pecas sao:\n", nomes[ordem],pontos[ordem]);
+    for(int i = 0; i<12;i++){
+      printf("%c", jogador[(ordem*12)+i]);
+      if((i+3)%2==0){
+        printf(" ");
       }
-      tabu(tam, tabuleiro);
-      printf("Para jogar novamente digite 1.\nPara terminar a jogada digite 2.\n______________________________________________\n");
-      scanf("%d", &escolha);
-      getchar();
+    }
+    printf("\n\nPara JOGAR digite: 1\nPara TROCAR PECAS digite: 2\n\n______________________________________________\n");
+    int escolha;
+    scanf("%d", &escolha);
+    getchar();
+
+    int flag;
+    if(escolha ==1){
+        while(escolha != 2){
+        flag = jogar(ordem, jogador, tam, tabuleiro, pecas, pontos);
+
+        if(flag == -1){
+          end = 0;
+          ganhador(njog, pontos, nomes);
+          break;
+        }
+        if(flag){
+          tabuleiro = aumentatab(&tam, tabuleiro);
+        }
+        printf("\e[H\e[2J");
+        tabu(tam, tabuleiro);
+        printf("__________________________________________________\n\nVez do jogador %s\nSuas pecas sao:\n", nomes[ordem]);
+        for(int i = 0; i<12;i++){
+          printf("%c", jogador[(ordem*12)+i]);
+          if((i+3)%2==0){
+            printf(" ");
+          }
+        }
+        printf("\nScore: %d\n", pontos[ordem]);
+        printf("Para jogar novamente digite 1.\nPara terminar a jogada digite 2.\n______________________________________________\n");
+        scanf("%d", &escolha);
+        getchar();
+      }
+    }
+    printf("\e[H\e[2J");
+    tabu(tam, tabuleiro);
+    ordem++;
+    if(ordem == njog){
+      ordem = 0;
     }
   }
   for(int i = 0; i <njog; i++){
