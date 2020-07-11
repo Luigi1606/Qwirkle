@@ -48,24 +48,29 @@ int jogar(int ordem, char *jogador, int tam, char *tabuleiro, char*pecas, int *p
       posicao = -1;
     } 
 
+    for(int i = 1; i< tam;i++){
+      if(x < tam-i && tabuleiro[posicao+2*i]!=jogador[ordem*12 +peca] && tabuleiro[posicao +2*i+1]!=jogador[ordem*12+peca+1] && tabuleiro[posicao+2*i]!= ' '){
+        printf("jogada invalida\n");
+        posicao = -1;
+        break;
 
-    if(x!= tam-1 && tabuleiro[posicao+2]!=jogador[ordem*12 +peca]&&tabuleiro[posicao +3]!=jogador[ordem*12+peca+1] && tabuleiro[posicao+2]!= ' '){
-      printf("jogada invalida\n");
-      posicao = -1;
+      }else if(x+1-i > 0 &&  tabuleiro[posicao-2*i]!=jogador[ordem*12+peca]&&tabuleiro[posicao -2*i+1]!=jogador[ordem*12+peca+1] && tabuleiro[posicao-2*1]!= ' '){
+        printf("jogada invalida\n");
+        posicao = -1;
+        break;
 
-    }else if(x!= 0 &&  tabuleiro[posicao-2]!=jogador[ordem*12+peca]&&tabuleiro[posicao -1]!=jogador[ordem*12+peca+1] && tabuleiro[posicao-2]!= ' '){
-      printf("jogada invalida\n");
-      posicao = -1;
+      }else if(y < tam-i && tabuleiro[posicao+(2*i*tam)]!=jogador[ordem*12+peca]&&tabuleiro[posicao+1+(2*i*tam)]!=jogador[ordem*12+peca+1] && tabuleiro[posicao+(2*i*tam)]!= ' '){
+        printf("jogada invalida\n");
+        posicao = -1;
+        break;
 
-    }else if(y != tam-1 && tabuleiro[posicao+(2*tam)]!=jogador[ordem*12+peca]&&tabuleiro[posicao+1+(2*tam)]!=jogador[ordem*12+peca+1] && tabuleiro[posicao+(2*tam)]!= ' '){
-      printf("jogada invalida\n");
-      posicao = -1;
-
-    }else if(y != 0 && tabuleiro[posicao-(2*tam)]!=jogador[ordem*12+peca]&&tabuleiro[posicao+1-(2*tam)]!=jogador[ordem*12+peca+1] && tabuleiro[posicao-(2*tam)]!= ' '){
-      printf("jogada invalida\n");
-      posicao = -1;
-
-    }else{
+      }else if(y+1-i > 0 && tabuleiro[posicao-(2*i*tam)]!=jogador[ordem*12+peca]&&tabuleiro[posicao+1-(2*i*tam)]!=jogador[ordem*12+peca+1] && tabuleiro[posicao-(2*i*tam)]!= ' '){
+        printf("jogada invalida\n");
+        posicao = -1;
+        break;
+      }
+    }
+    if(posicao >= 0){
       for(int i = 1; i<tam; i++){
         if(posicao+2*i < (y+1)*2*tam && tabuleiro[posicao+2*i]==jogador[ordem*12+peca] && tabuleiro[posicao+(2*i)+1]==jogador[ordem*12+peca +1]){
           printf("jogada invalida\n");

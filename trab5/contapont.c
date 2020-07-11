@@ -1,7 +1,7 @@
 #include "libqwirkle.h"
 
 void contapont(int x, int y, int posicao, int *pontos, int tam, char *tabuleiro, int ordem){
-  int soma = 1;
+  int soma = 0;
   for(int i = 2; tabuleiro[posicao+i] != ' ' && posicao+i<tam*y*2; i+=2){
     soma++;
   }
@@ -12,7 +12,7 @@ void contapont(int x, int y, int posicao, int *pontos, int tam, char *tabuleiro,
     printf("Qwirkleeeee!!!!!!!!!!!!\n\n\n");
     soma +=6;
   }
-  pontos[ordem]+=(soma-1);
+  pontos[ordem]+=(soma);
   soma = 1;
   for(int i = 2*tam; tabuleiro[posicao+i]!= ' ' && i< tam*tam; i+=2*tam){
     soma++;
