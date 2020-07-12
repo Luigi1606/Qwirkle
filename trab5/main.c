@@ -66,18 +66,6 @@ int main(){
     exit(0);
   }
 
-  for(int j = 0; j<12*njog; j+=2){
-   int dealer = 1;
-
-   srand(time(NULL)+j);
-   while((pecas[dealer]==0)||((dealer+2)%2!=0)){
-     dealer = rand() % 216;
-    }
-   jogador[j] = pecas[dealer];
-   jogador[j+1]= pecas[dealer+1];
-   pecas[dealer]= 0;
-   pecas[dealer+1] = 0;
-  }
   do{
     char c;
     printf("Jogar em Modo Cheat (S/N)? ");
@@ -91,6 +79,22 @@ int main(){
       printf("<Resposta invalida>\n");
     }
   }while(cheat == -1);
+
+  for(int j = 0; j<12*njog; j+=2){
+   int dealer = 1;
+
+   srand(time(NULL)+j);
+   while((pecas[dealer]==0)||((dealer+2)%2!=0)){
+     dealer = rand() % 216;
+    }
+   jogador[j] = pecas[dealer];
+   jogador[j+1]= pecas[dealer+1];
+   if(!cheat){
+      pecas[dealer]= 0;
+      pecas[dealer+1] = 0;
+    }
+  }
+
   int k = 0;
   for(int i = 0; i< njog;i++){
     printf("\nPecas do jogador %s\n", nomes[i]);
@@ -144,14 +148,14 @@ int main(){
   tabu(tam, tabuleiro);
   int end = 1;
   while(end){
-    printf("__________________________________________________\n\nVez do jogador %s\nScore: %d\n\nSuas pecas sao:\n", nomes[ordem],pontos[ordem]);
+    printf("__________________________________________________\n\nVez do jogador %s\nScore: %d\nSuas pecas sao:\n", nomes[ordem],pontos[ordem]);
     for(int i = 0; i<12;i++){
       printf("%c", jogador[(ordem*12)+i]);
       if((i+3)%2==0){
         printf(" ");
       }
     }
-    printf("\n\nPara JOGAR digite: 1\nPara TROCAR PECAS digite: 2\n\n______________________________________________\n");
+    printf("\n\nPara JOGAR digite - 1\nPara TROCAR PECAS digite - 2\nPara PASSAR digite - 3\n\n______________________________________________\n");
     int escolha;
     scanf("%d", &escolha);
     getchar();
@@ -168,7 +172,6 @@ int main(){
             flag = jogar(ordem, jogador, tam, tabuleiro, pecas, pontos, times, &xant, &yant,&trava);
             times++;
           }else{
-            ordem = 0;
             flag = jogarch(ordem, tam, tabuleiro, pecas, pontos, times, &xant, &yant,&trava);
             times++;
           }
@@ -198,17 +201,38 @@ int main(){
           }
         }
         printf("\nScore: %d\n", pontos[ordem]);
-        // printf("\nVezes jogadas: %d\n", times);
-        printf("\nJogada anterior: %d %d\n", yant, xant);
+        printf("Jogada anterior: %d %d\n", yant, xant);
         printf("Para jogar novamente digite 1.\nPara terminar a jogada digite 2.\n______________________________________________\n");
         scanf("%d", &escolha);
         getchar();
         if(escolha == 2){
+          if(!cheat){
+            for(int i = 0; i < times; i ++){
+              for(int j = 0; j < 12; j+=2){
+                if(jogador[ordem*12 +j]=='/'){
+                  srand(time(NULL));
+                  int dealer = 1;
+                  while((pecas[dealer]==0)||((dealer+2)%2!=0)){
+                    dealer = rand() % 216;
+                  }
+                  jogador[ordem*12+j] = pecas[dealer];
+                  jogador[ordem*12+j+1]= pecas[dealer+1];
+                  pecas[dealer]= 0;
+                  pecas[dealer+1] = 0;
+                  break;
+                }
+              }
+            }
+          }
           times = 0;
         }
       }
     }else if(escolha == 2){
-      trocar(pecas,jogador,ordem);
+      if(cheat){
+        printf("Voce esta em cheat mode nao há como trocar de peças");
+      }else{
+        trocar(pecas,jogador,ordem);
+      }
     }
     printf("\e[H\e[2J");
     tabu(tam, tabuleiro);
@@ -217,6 +241,7 @@ int main(){
       ordem = 0;
     }
   }
+  
   for(int i = 0; i <njog; i++){
     free(nomes[i]);
   }
