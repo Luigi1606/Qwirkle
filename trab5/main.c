@@ -2,14 +2,16 @@
 
 int main(){
   printf("\e[H\e[2J");
+  
     int njog;
+    int cheat = -1;
   do{
-  printf("Informe o numero de jogadores:\n");
-  scanf("%d", &njog);
-  if(njog>18){
-    printf("Nao ha pecas o suficiente para mais do que 18 jogadores");
-  }
-  }while(njog >18);
+    printf("Informe o numero de jogadores:\n");
+    scanf("%d", &njog);
+    if(njog>18){
+      printf("Nao ha pecas o suficiente para mais do que 18 jogadores");
+    }
+  }while(njog >18 );
   getchar();
   int *pontos = (int*) malloc(njog*sizeof(int));
   if(pontos == NULL){
@@ -65,7 +67,9 @@ int main(){
   }
 
   for(int j = 0; j<12*njog; j+=2){
-   int dealer = 0;
+   int dealer = 1;
+
+   srand(time(NULL)+j);
    while((pecas[dealer]==0)||((dealer+2)%2!=0)){
      dealer = rand() % 216;
     }
@@ -74,6 +78,19 @@ int main(){
    pecas[dealer]= 0;
    pecas[dealer+1] = 0;
   }
+  do{
+    char c;
+    printf("Jogar em Modo Cheat (S/N)? ");
+    scanf("%c",&c);
+    getchar();
+    if(c == 'S' || c== 's'){
+      cheat = 1;
+    }else if(c == 'N' || c == 'n'){
+      cheat = 0;
+    }else{
+      printf("<Resposta invalida>\n");
+    }
+  }while(cheat == -1);
   int k = 0;
   for(int i = 0; i< njog;i++){
     printf("\nPecas do jogador %s\n", nomes[i]);
@@ -138,11 +155,23 @@ int main(){
     int escolha;
     scanf("%d", &escolha);
     getchar();
+    int xant;
+    int yant;
+    int trava;
+    int times = 0;
 
     int flag;
     if(escolha ==1){
+        trava = 0;
         while(escolha != 2){
-        flag = jogar(ordem, jogador, tam, tabuleiro, pecas, pontos);
+          if(!cheat){
+            flag = jogar(ordem, jogador, tam, tabuleiro, pecas, pontos, times, &xant, &yant,&trava);
+            times++;
+          }else{
+            ordem = 0;
+            flag = jogarch(ordem, tam, tabuleiro, pecas, pontos, times, &xant, &yant,&trava);
+            times++;
+          }
 
         if(flag == -1){
           end = 0;
@@ -151,6 +180,13 @@ int main(){
         }
         if(flag){
           tabuleiro = aumentatab(&tam, tabuleiro);
+          if(xant != -1){
+            xant++;
+          }
+
+          if(yant != -1){
+            yant++;
+          }
         }
         printf("\e[H\e[2J");
         tabu(tam, tabuleiro);
@@ -162,10 +198,17 @@ int main(){
           }
         }
         printf("\nScore: %d\n", pontos[ordem]);
+        // printf("\nVezes jogadas: %d\n", times);
+        printf("\nJogada anterior: %d %d\n", yant, xant);
         printf("Para jogar novamente digite 1.\nPara terminar a jogada digite 2.\n______________________________________________\n");
         scanf("%d", &escolha);
         getchar();
+        if(escolha == 2){
+          times = 0;
+        }
       }
+    }else if(escolha == 2){
+      trocar(pecas,jogador,ordem);
     }
     printf("\e[H\e[2J");
     tabu(tam, tabuleiro);
