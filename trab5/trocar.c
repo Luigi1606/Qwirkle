@@ -33,7 +33,6 @@ void trocar(char *pecas, char *jogador, int ordem){
     }
     jogador[ordem*12+peca] = pecas[dealer];
     jogador[ordem*12+peca+1]= pecas[dealer+1];
-    printf("<Voce recebeu uma peca %c%c>\n",jogador[ordem*12+peca],jogador[ordem*12+peca+1]);
     pecas[dealer]= 0;
     pecas[dealer+1] = 0;
     getchar();

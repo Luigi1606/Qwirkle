@@ -165,26 +165,40 @@ int jogar(int ordem, char *jogador, int tam, char *tabuleiro, char*pecas, int *p
       }
     }
 
-      for(int i = 1; i< 2;i++){
+      for(int i = 1; i< 3;i++){
         if(x < tam-i && (tabuleiro[posicao+2*i]!=jogador[ordem*12 +peca] && tabuleiro[posicao +2*i+1]!=jogador[ordem*12+peca+1]) && tabuleiro[posicao+2*i]!= ' '){
-          printf("jogada invalida\n");
-          posicao = -1;
-          break;
+          if(i == 2 && tabuleiro[posicao+2]== ' '){
 
-        }else if(x+1-i > 0 && tabuleiro[posicao-2*i]!=jogador[ordem*12+peca]&&tabuleiro[posicao -2*i+1]!=jogador[ordem*12+peca+1] && tabuleiro[posicao-2*1]!= ' '){
+          }else{
           printf("jogada invalida\n");
           posicao = -1;
           break;
+          }
+        }else if(x+1-i > 0 && tabuleiro[posicao-2*i]!=jogador[ordem*12+peca]&&tabuleiro[posicao -2*i+1]!=jogador[ordem*12+peca+1] && tabuleiro[posicao-2*1]!= ' '){
+          if(i == 2 && tabuleiro[posicao-2]== ' '){
+
+          }else{
+          printf("jogada invalida\n");
+          posicao = -1;
+          break;
+          }
 
         }else if(y < tam-i && tabuleiro[posicao+(2*i*tam)]!=jogador[ordem*12+peca]&&tabuleiro[posicao+1+(2*i*tam)]!=jogador[ordem*12+peca+1] && tabuleiro[posicao+(2*i*tam)]!= ' '){
-          printf("jogada invalida\n");
-          posicao = -1;
-          break;
+          if(i == 2 && tabuleiro[posicao+2*tam]== ' '){
 
-        }else if(y+1-i > 0 && tabuleiro[posicao-(2*i*tam)]!=jogador[ordem*12+peca]&&tabuleiro[posicao+1-(2*i*tam)]!=jogador[ordem*12+peca+1] && tabuleiro[posicao-(2*i*tam)]!= ' '){
+          }else{
           printf("jogada invalida\n");
           posicao = -1;
           break;
+          }
+        }else if(y+1-i > 0 && tabuleiro[posicao-(2*i*tam)]!=jogador[ordem*12+peca]&&tabuleiro[posicao+1-(2*i*tam)]!=jogador[ordem*12+peca+1] && tabuleiro[posicao-(2*i*tam)]!= ' '){
+          if(i == 2 && tabuleiro[posicao-2*tam]== ' '){
+
+          }else{
+          printf("jogada invalida\n");
+          posicao = -1;
+          break;
+          }
         }
       }
     }
@@ -237,15 +251,9 @@ int jogar(int ordem, char *jogador, int tam, char *tabuleiro, char*pecas, int *p
        return-1;
      }
    }
-   srand(time(NULL));
-   while((pecas[dealer]==0)||((dealer+2)%2!=0)){
-     dealer = rand() % 216;
-    }
-    jogador[ordem*12+peca] = pecas[dealer];
-    jogador[ordem*12+peca+1]= pecas[dealer+1];
-    pecas[dealer]= 0;
-    pecas[dealer+1] = 0;
-    contapont(x, y, posicao,pontos, tam, tabuleiro, ordem, times);
+  jogador[ordem*12+peca] = '/';
+  jogador[ordem*12+peca+1]= '/';
+  contapont(x, y, posicao,pontos, tam, tabuleiro, ordem, times);
   if(flag==1){
    return 1;
   }
